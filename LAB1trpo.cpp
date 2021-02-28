@@ -151,10 +151,6 @@ bool is_correct_move(string s, char c) {
 	char f = s[0];
 	int c1 = s[1] - 'a', r1 = s[2] - '1', c2 = s[4] - 'a', r2 = s[5] - '1';
 
-	char color1 = color[r1][c1];
-	char field1 = field[r1][c1];
-	char color2 = color[r1][c1];
-	char field2 = field[r1][c1];
 
 	if (color[r1][c1] != c || field[r1][c1] != f || color[r2][c2] == c || (is_pawn(f) && c1 == c2 && color[r2][c2] != '*')) {
 		return false;
