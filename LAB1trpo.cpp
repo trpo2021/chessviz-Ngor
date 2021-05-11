@@ -9,40 +9,31 @@
 
 using namespace std;
 
-void start_game();
-void draw_game();
-void check_result();
-vector<string> split_by_char(string s, char c);
+void start_game(char field[8][8], char color[8][8]);
+void draw_game(char field[8][8], char color[8][8]);
+string check_result(char field[8][8], char color[8][8]);
+vector<string> split_by_char(string s, char c, char field[8][8], char color[8][8]);
 bool is_pawn(char c);
 bool is_figure(char c);
 bool is_ah(char c);
 bool is_18(char c);
-int is_valid_string(string& s);
-bool is_correct_move(string s, char c);
+int is_valid_string(string& s, char field[8][8], char color[8][8]);
+bool is_correct_move(string s, char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast);
 char get_enemy(char c);
-vector<pair<int, int>> attacks(int I, int J);
-bool king_check(char c);
-bool try_long_castling(char c);
-bool try_short_castling(char c);
+vector<pair<int, int>> attacks(int I, int J, char field[8][8], char color[8][8]);
+bool king_check(char c, char field[8][8], char color[8][8]);
+bool try_long_castling(char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast);
+bool try_short_castling(char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast);
 
-char field[8][8];
 
-char color[8][8];
-
-string state;
 
 const string IN_PROGRESS = "in progress";
 const string WIN_WHITE = "win_white";
 const string WIN_BLACK = "win_black";
 const string DRAW = "draw";
 
-vector<string> str;
 
-bool w_cast, b_cast;
-
-void start_game() {
-	state = IN_PROGRESS;
-	w_cast = b_cast = true;
+void start_game(char field[8][8], char color[8][8]) {
 
 	for (int i = 2; i <= 5; i++) {
 		for (int j = 0; j <= 7; j++) {
@@ -67,7 +58,7 @@ void start_game() {
 	field[0][4] = field[7][4] = 'K';
 }
 
-void draw_game() {
+void draw_game(char field[8][8], char color[8][8]) {
 	for (int i = 7; i >= 0; i--) {
 		cout << (i + 1);
 		for (int j = 0; j <= 7; j++) {
@@ -79,17 +70,18 @@ void draw_game() {
 	cout << endl;
 }
 
-void check_result() {
-	if (king_check('w')) {
+string check_result(char field[8][8], char color[8][8]) {
+	string state;
+	if (king_check('w', field, color)) {
 		state = WIN_BLACK;
-	}
-	else if (king_check('b')) {
+	} else if (king_check('b', field, color)) {
 		state = WIN_WHITE;
 	}
 	state = DRAW;
+	return state;
 }
 
-vector<string> split_by_char(string s, char c) {
+vector<string> split_by_char(string s, char c, char field[8][8], char color[8][8]) {
 	vector<string> result;
 	string buff;
 	for (size_t i = 0; i < s.size(); i++) {
@@ -123,7 +115,7 @@ bool is_18(char c) {
 	return (c >= '1' && c <= '8');
 }
 
-int is_valid_string(string& s) {
+int is_valid_string(string& s, char field[8][8], char color[8][8]) {
 	if (s == "0-0") {
 		return 2;
 	}
@@ -147,7 +139,7 @@ int is_valid_string(string& s) {
 	return ((is_figure(s[0]) && is_ah(s[1]) && is_18(s[2]) && s[3] == '-' && is_ah(s[4]) && is_18(s[5])) ? 1 : 0);
 }
 
-bool is_correct_move(string s, char c) {
+bool is_correct_move(string s, char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast) {
 	char f = s[0];
 	int c1 = s[1] - 'a', r1 = s[2] - '1', c2 = s[4] - 'a', r2 = s[5] - '1';
 
@@ -156,7 +148,7 @@ bool is_correct_move(string s, char c) {
 		return false;
 	}
 
-	vector<pair<int, int>> allow = attacks(r1, c1);
+	vector<pair<int, int>> allow = attacks(r1, c1, field, color);
 	bool ok = false;
 	for (size_t i = 0; i < allow.size(); i++) {
 		if (allow[i].first == r2 && allow[i].second == c2) {
@@ -225,14 +217,14 @@ bool is_correct_move(string s, char c) {
 	field[r2][c2] = f;
 	color[r2][c2] = c;
 
-	return !king_check(c);
+	return !king_check(c, field, color);
 }
 
 char get_enemy(char c) {
 	return (c == 'w' ? 'b' : 'w');
 }
 
-vector<pair<int, int>> attacks(int I, int J) {
+vector<pair<int, int>> attacks(int I, int J, char field[8][8], char color[8][8]) {
 	vector<pair<int, int>> result;
 	if (field[I][J] == '*') {
 		return result;
@@ -322,7 +314,7 @@ vector<pair<int, int>> attacks(int I, int J) {
 	return result;
 }
 
-bool king_check(char c) {
+bool king_check(char c, char field[8][8], char color[8][8]) {
 	int I = 0, J = 0;
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
@@ -336,7 +328,7 @@ bool king_check(char c) {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			if (color[i][j] == get_enemy(c)) {
-				vector<pair<int, int>> attack = attacks(i, j);
+				vector<pair<int, int>> attack = attacks(i, j, field, color);
 				for (size_t k = 0; k < attack.size(); k++) {
 					if (attack[k].first == I && attack[k].second == J) {
 						return true;
@@ -349,8 +341,8 @@ bool king_check(char c) {
 	return false;
 }
 
-bool try_short_castling(char c) {
-	if (king_check(c) || (c == 'w' && !w_cast) || (c == 'b' && !b_cast)) {
+bool try_short_castling(char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast) {
+	if (king_check(c, field, color) || (c == 'w' && !w_cast) || (c == 'b' && !b_cast)) {
 		return false;
 	}
 
@@ -372,8 +364,8 @@ bool try_short_castling(char c) {
 	return false;
 }
 
-bool try_long_castling(char c) {
-	if (king_check(c) || (c == 'w' && !w_cast) || (c == 'b' && !b_cast)) {
+bool try_long_castling(char c, char field[8][8], char color[8][8], bool w_cast, bool b_cast) {
+	if (king_check(c, field, color) || (c == 'w' && !w_cast) || (c == 'b' && !b_cast)) {
 		return false;
 	}
 
@@ -396,6 +388,17 @@ bool try_long_castling(char c) {
 }
 
 int main() {
+
+	string state;
+
+	vector<string> str;
+
+	char field[8][8];
+
+	char color[8][8];
+
+	bool w_cast = true, b_cast = true;
+
 	freopen("movements.txt", "r", stdin);
 	string s;
 	while (cin >> s) {
@@ -403,22 +406,22 @@ int main() {
 	}
 	fclose(stdin);
 
-	start_game();
-	draw_game();
+	start_game(field, color);
+	draw_game(field, color);
 
 	char md = 'w';
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		int valid = is_valid_string(str[i]);
+		int valid = is_valid_string(str[i], field, color);
 		if (valid) {
-			if (valid == 1 && is_correct_move(str[i], md)) {
-				draw_game();
+			if (valid == 1 && is_correct_move(str[i], md, field, color, w_cast, b_cast)) {
+				draw_game(field, color);
 			}
-			else if (valid == 2 && try_short_castling(md)) {
-				draw_game();
+			else if (valid == 2 && try_short_castling(md, field, color, w_cast, b_cast)) {
+				draw_game(field, color);
 			}
-			else if (valid == 3 && try_long_castling(md)) {
-				draw_game();
+			else if (valid == 3 && try_long_castling(md, field, color, w_cast, b_cast)) {
+				draw_game(field, color);
 			}
 			else {
 				cout << "ERROR: <Invalid movement> : " << str[i].substr(1) << endl;
@@ -430,12 +433,11 @@ int main() {
 			break;
 		}
 		if (i == str.size() - 1) {
-			check_result();
+			state = check_result(field, color);
 			cout << "End of game. Result of game : " << state << endl;
 		}
 		md = get_enemy(md);
 	}
 
-	system("pause");
 	return 0;
 }

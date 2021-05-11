@@ -1,54 +1,56 @@
-### C ++ ###
-# Предпосылки
-* .d
+### C++ ###
+# Prerequisites
+*.d
 
-# Скомпилированные объектные файлы
-* .slo
-* .lo
-* .o
-* .obj
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
 
-# Предварительно скомпилированные заголовки
-* .gch
-* .pch
+# Precompiled Headers
+*.gch
+*.pch
 
-# Файлы компоновщика
-* .ilk
+# Linker files
+*.ilk
 
-# Файлы отладчика
-* .pdb
+# Debugger Files
+*.pdb
 
-# Скомпилированные динамические библиотеки
-*.так
-* .dylib
-* .dll
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
 
-# Файлы модуля Fortran
-* .mod
-* .smod
+# Fortran module files
+*.mod
+*.smod
 
-# Скомпилированные статические библиотеки
-* .lai
-* .la
-* .a
-* .lib
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
 
-# Исполняемые файлы
-*.EXE
-*.из
-*.приложение
+# Executables
+*.exe
+*.out
+*.app
 
 ### Linux ###
-* ~
+*~
 
-# временные файлы, которые могут быть созданы, если у процесса еще есть дескриптор удаленного файла
-.fuse_hidden *
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
 
-# Настройки каталога KDE
+# KDE directory preferences
 .directory
 
-# Корзина для мусора Linux, которая может появиться на любом разделе или диске
-.Мусор-*
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
 
-# Файлы .nfs создаются, когда открытый файл удаляется, но к нему все еще обращаются
-.nfs *
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+output
