@@ -12,20 +12,16 @@ using namespace std;
 void start_game(char field[8][8], char color[8][8]);
 void draw_game(char field[8][8], char color[8][8]);
 string check_result(char field[8][8], char color[8][8]);
-vector<string>
-split_by_char(string s, char c, char field[8][8], char color[8][8]);
 bool is_pawn(char c);
 bool is_figure(char c);
 bool is_ah(char c);
 bool is_18(char c);
-int is_valid_string(string& s, char field[8][8], char color[8][8]);
+int is_valid_string(string& s, char color[8][8]);
 bool is_correct_move(
         string s,
         char c,
         char field[8][8],
-        char color[8][8],
-        bool w_cast,
-        bool b_cast);
+        char color[8][8]); //bool w_cast, bool b_cast
 char get_enemy(char c);
 vector<pair<int, int>>
 attacks(int I, int J, char field[8][8], char color[8][8]);
@@ -90,24 +86,6 @@ string check_result(char field[8][8], char color[8][8])
     return state;
 }
 
-vector<string>
-split_by_char(string s, char c, char field[8][8], char color[8][8])
-{
-    vector<string> result;
-    string buff;
-    for (size_t i = 0; i < s.size(); i++) {
-        if (s[i] != 'c') {
-            buff += s[i];
-        } else if (buff.size()) {
-            result.push_back(buff);
-            buff = "";
-        }
-    }
-    if (buff.size()) {
-        result.push_back(buff);
-    }
-    return result;
-}
 
 bool is_pawn(char c)
 {
@@ -130,7 +108,7 @@ bool is_18(char c)
     return (c >= '1' && c <= '8');
 }
 
-int is_valid_string(string& s, char field[8][8], char color[8][8])
+int is_valid_string(string& s, char color[8][8])
 {
     if (s == "0-0") {
         return 2;
@@ -161,9 +139,8 @@ bool is_correct_move(
         string s,
         char c,
         char field[8][8],
-        char color[8][8],
-        bool w_cast,
-        bool b_cast)
+        char color[8][8])
+//bool w_cast, bool b_cast
 {
     char f = s[0];
     int c1 = s[1] - 'a', r1 = s[2] - '1', c2 = s[4] - 'a', r2 = s[5] - '1';
@@ -219,9 +196,9 @@ bool is_correct_move(
 
     if (f == 'K') {
         if (c == 'w') {
-            w_cast = false;
+            //w_cast = false;
         } else {
-            b_cast = false;
+            //b_cast = false;
         }
     }
 
@@ -429,10 +406,10 @@ int main()
 
     char md = 'w';
     for (size_t i = 0; i < str.size(); i++) {
-        int valid = is_valid_string(str[i], field, color);
+        int valid = is_valid_string(str[i], color);
         if (valid) {
             if (valid == 1
-                && is_correct_move(str[i], md, field, color, w_cast, b_cast)) {
+                && is_correct_move(str[i], md, field, color)) { //, w_cast, b_cast
                 draw_game(field, color);
             } else if (
                     valid == 2
