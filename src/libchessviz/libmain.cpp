@@ -2,8 +2,6 @@
 
 using namespace std;
 
-
-
 void start_game(char field[8][8], char color[8][8])
 {
     for (int i = 2; i <= 5; i++) {
@@ -54,7 +52,6 @@ string check_result(char field[8][8], char color[8][8])
     return state;
 }
 
-
 bool is_pawn(char c)
 {
     return (c == 'w' || c == 'b');
@@ -103,12 +100,8 @@ int is_valid_string(string& s, char color[8][8])
                     : 0);
 }
 
-bool is_correct_move(
-        string s,
-        char c,
-        char field[8][8],
-        char color[8][8])
-//bool w_cast, bool b_cast
+bool is_correct_move(string s, char c, char field[8][8], char color[8][8])
+// bool w_cast, bool b_cast
 {
     char f = s[0];
     int c1 = s[1] - 'a', r1 = s[2] - '1', c2 = s[4] - 'a', r2 = s[5] - '1';
@@ -164,9 +157,9 @@ bool is_correct_move(
 
     if (f == 'K') {
         if (c == 'w') {
-            //w_cast = false;
+            // w_cast = false;
         } else {
-            //b_cast = false;
+            // b_cast = false;
         }
     }
 

@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 void start_game(char field[8][8], char color[8][8]);
 void draw_game(char field[8][8], char color[8][8]);
 string check_result(char field[8][8], char color[8][8]);
@@ -20,7 +19,7 @@ bool is_correct_move(
         string s,
         char c,
         char field[8][8],
-        char color[8][8]); //bool w_cast, bool b_cast
+        char color[8][8]); // bool w_cast, bool b_cast
 char get_enemy(char c);
 vector<pair<int, int>>
 attacks(int I, int J, char field[8][8], char color[8][8]);

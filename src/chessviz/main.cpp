@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 int main()
 {
     string state;
@@ -32,7 +31,8 @@ int main()
         int valid = is_valid_string(str[i], color);
         if (valid) {
             if (valid == 1
-                && is_correct_move(str[i], md, field, color)) { //, w_cast, b_cast
+                && is_correct_move(
+                        str[i], md, field, color)) { //, w_cast, b_cast
                 draw_game(field, color);
             } else if (
                     valid == 2
