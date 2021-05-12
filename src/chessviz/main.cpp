@@ -23,7 +23,7 @@ int main()
     }
     fclose(stdin);
 
-    start_game(field, color);
+               start_game(field, color);
     draw_game(field, color);
 
     char md = 'w';
