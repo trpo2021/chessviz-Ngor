@@ -4,7 +4,6 @@ using namespace std;
 
 int main()
 {
-
     vector<string> str;
 
     char field[8][8];
@@ -24,8 +23,9 @@ int main()
     for (size_t i = 0; i < str.size(); i++) {
         int valid = is_valid_string(str[i], color);
         if (valid) {
-        	move(str[i], field, color);
-            draw_game(field, color);} else {
+            move(str[i], field, color);
+            draw_game(field, color);
+        } else {
             cout << "ERROR: <Invalid input data> : " << str[i].substr(1)
                  << endl;
             break;

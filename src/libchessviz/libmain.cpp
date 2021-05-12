@@ -91,14 +91,12 @@ int is_valid_string(string& s, char color[8][8])
 void move(string s, char field[8][8], char color[8][8])
 // bool w_cast, bool b_cast
 {
-    //char f = s[0];
+    // char f = s[0];
     int c1 = s[1] - 'a', r1 = s[2] - '1', c2 = s[4] - 'a', r2 = s[5] - '1';
 
-    
     field[r2][c2] = field[r1][c1];
     color[r2][c2] = color[r1][c1];
     color[r1][c1] = field[r1][c1] = '*';
 
     return;
 }
-
