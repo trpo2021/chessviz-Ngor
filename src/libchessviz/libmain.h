@@ -14,7 +14,4 @@ bool is_figure(char c);
 bool is_ah(char c);
 bool is_18(char c);
 int is_valid_string(string& s, char color[8][8]);
-void move(
-        string s,
-        char field[8][8],
-        char color[8][8]); 
+void move(string s, char field[8][8], char color[8][8]);
