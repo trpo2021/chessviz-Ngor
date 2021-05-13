@@ -9,7 +9,6 @@ using namespace std;
 
 void start_game(char field[8][8], char color[8][8]);
 void draw_game(char field[8][8], char color[8][8]);
-string check_result(char field[8][8], char color[8][8]);
 bool is_pawn(char c);
 bool is_figure(char c);
 bool is_ah(char c);
