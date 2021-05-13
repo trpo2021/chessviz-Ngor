@@ -24,8 +24,8 @@ APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.$(SRC_EXT)')
 LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
-TEST_SOURCES = $(shell find $(TEST_DIR)/ -name '*.c')
-TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.c=obj/test/%.o)
+TEST_SOURCES = $(shell find $(TEST_DIR)/ -name '*.$(SRC_EXT)')
+TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.$(SRC_EXT)=obj/test/%.o)
 
 DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
 
@@ -53,7 +53,7 @@ test: $(TEST_PATH)
 $(TEST_PATH): $(TEST_OBJECTS) $(LIB_PATH)
 	g++ $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
-$(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
+$(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp
 	g++ -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 .PHONY: clean
