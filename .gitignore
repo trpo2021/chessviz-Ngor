@@ -54,3 +54,4 @@
 .nfs*
 
 bin/chessviz
+bin/test
